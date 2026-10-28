@@ -3,7 +3,7 @@ import { Heart, Star, ShoppingCart } from "lucide-react";
 
 const TrendingCard = ({ product }) => {
   return (
-    <div className="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white transition duration-300 hover:-translate-y-1 hover:border-blue-200 hover:shadow-xl hover:shadow-slate-200/60">
+    <div className="cursor-pointer group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white transition duration-300 hover:-translate-y-1 hover:border-blue-200 hover:shadow-xl hover:shadow-slate-200/60">
       {/* Product Image */}
       <div className="relative flex h-44 shrink-0 items-center justify-center bg-slate-50 p-5 sm:h-60 sm:p-7">
         <img
@@ -59,7 +59,7 @@ const TrendingCard = ({ product }) => {
 
         {/* Button - Always pushed to the bottom */}
         <div className="mt-auto pt-4">
-          <div className="flex min-h-10 items-center justify-center gap-2 rounded-xl bg-slate-900 px-3 py-2.5 text-xs font-semibold text-white transition group-hover:bg-blue-600 sm:text-sm">
+          <div className=" cursor-pointer flex min-h-10 items-center justify-center gap-2 rounded-xl bg-slate-900 px-3 py-2.5 text-xs font-semibold text-white transition group-hover:bg-blue-600 sm:text-sm">
             <ShoppingCart className="h-4 w-4 shrink-0" />
             Add to cart
           </div>

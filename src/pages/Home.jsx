@@ -9,13 +9,14 @@ import {
   ShieldCheck,
   Headphones,
 } from "lucide-react";
-import Navbar from "../components/Navbar";
+
 import AnnouncementBar from "../components/AnnouncementBar";
 import CategoryCard from "../components/CategoryCard";
 import TrendingCard from "../components/TrendingCard";
 import { MyStore } from "../context/MyContext";
 import TrendingSkeleton from "../components/TrendingSkeleton";
-
+import NavbarLinks from "../components/NavbarLinks";
+import Navbar from "../components/Navbar";
 const categories = [
   {
     id: 1,
@@ -74,9 +75,9 @@ function Home() {
 
   return (
     <div className="min-h-screen bg-white text-slate-900">
-      <AnnouncementBar />
-
       <Navbar />
+      <NavbarLinks />
+      <AnnouncementBar />
 
       <main className="mx-auto max-w-360 px-5 py-6 sm:px-8 lg:px-12">
         {/* Hero Section */}

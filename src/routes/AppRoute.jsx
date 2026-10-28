@@ -2,16 +2,36 @@ import { createBrowserRouter, RouterProvider } from "react-router";
 import React from "react";
 import Home from "../pages/Home";
 import ProductsPage from "../pages/ProductsPage";
+import MainLayout from "../layouts/MainLayout";
+import AccountPage from "../pages/AccountPage";
+import WishlistPage from "../pages/WishlistPage";
+import CartPage from "../pages/CartPage";
 
 const AppRoute = () => {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Home />,
+      element: <MainLayout />,
       children: [
         {
-          path: ":category",
+          path: "",
+          element: <Home />,
+        },
+        {
+          path: "products/:category",
           element: <ProductsPage />,
+        },
+        {
+          path: "account",
+          element: <AccountPage />,
+        },
+        {
+          path: "wishlist",
+          element: <WishlistPage />,
+        },
+        {
+          path: "cart",
+          element: <CartPage />,
         },
       ],
     },

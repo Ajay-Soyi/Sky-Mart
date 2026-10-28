@@ -1,10 +1,14 @@
 import { createContext, useEffect, useState } from "react";
 import { axiosInstance } from "../config/axiosInstance";
+import { useParams } from "react-router";
 
 export const MyStore = createContext();
 
 export const MyContextProvider = ({ children }) => {
   const [productsData, setProductsData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const [searchData, setSearchData] = useState("");
+  const { category } = useParams();
 
   const getProductsData = async () => {
     try {
@@ -16,10 +20,21 @@ export const MyContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    const tempFilteredData = productsData.filter(
+      (elem) => elem.category === category,
+    );
+    setFilteredData(tempFilteredData);
+  }, [category, productsData]);
+
+  useEffect(() => {
     getProductsData();
   }, []);
 
   return (
-    <MyStore.Provider value={{ productsData }}>{children}</MyStore.Provider>
+    <MyStore.Provider
+      value={{ productsData, filteredData, setSearchData, searchData }}
+    >
+      {children}
+    </MyStore.Provider>
   );
 };
