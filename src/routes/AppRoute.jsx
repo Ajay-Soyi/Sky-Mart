@@ -1,12 +1,15 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
 import React from "react";
 import Home from "../pages/Home";
-import ProductsPage from "../pages/ProductsPage";
-import MainLayout from "../layouts/MainLayout";
-import AccountPage from "../pages/AccountPage";
-import WishlistPage from "../pages/WishlistPage";
-import CartPage from "../pages/CartPage";
-import ProductsDetail from "../pages/ProductsDetail";
+import { lazy } from "react";
+import { Suspense } from "react";
+
+let ProductsPage = lazy(() => import("../pages/ProductsPage"));
+let MainLayout = lazy(() => import("../layouts/MainLayout"));
+let AccountPage = lazy(() => import("../pages/AccountPage"));
+let WishlistPage = lazy(() => import("../pages/WishlistPage"));
+let CartPage = lazy(() => import("../pages/CartPage"));
+let ProductsDetail = lazy(() => import("../pages/ProductsDetail"));
 
 const AppRoute = () => {
   const router = createBrowserRouter([
@@ -23,25 +26,45 @@ const AppRoute = () => {
           children: [
             {
               path: ":category",
-              element: <ProductsPage />,
+              element: (
+                <Suspense fallback={<h1>Loading data...</h1>}>
+                  <ProductsPage />
+                </Suspense>
+              ),
             },
             {
               path: "details/:id",
-              element: <ProductsDetail />,
+              element: (
+                <Suspense fallback={<h1>Loading data...</h1>}>
+                  <ProductsDetail />
+                </Suspense>
+              ),
             },
           ],
         },
         {
           path: "account",
-          element: <AccountPage />,
+          element: (
+            <Suspense fallback={<h1>Loading data...</h1>}>
+              <AccountPage />
+            </Suspense>
+          ),
         },
         {
           path: "wishlist",
-          element: <WishlistPage />,
+          element: (
+            <Suspense fallback={<h1>Loading data...</h1>}>
+              <WishlistPage />
+            </Suspense>
+          ),
         },
         {
           path: "cart",
-          element: <CartPage />,
+          element: (
+            <Suspense fallback={<h1>Loading data...</h1>}>
+              <CartPage />
+            </Suspense>
+          ),
         },
       ],
     },
