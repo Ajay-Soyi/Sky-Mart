@@ -6,6 +6,7 @@ import MainLayout from "../layouts/MainLayout";
 import AccountPage from "../pages/AccountPage";
 import WishlistPage from "../pages/WishlistPage";
 import CartPage from "../pages/CartPage";
+import ProductsDetail from "../pages/ProductsDetail";
 
 const AppRoute = () => {
   const router = createBrowserRouter([
@@ -18,8 +19,17 @@ const AppRoute = () => {
           element: <Home />,
         },
         {
-          path: "products/:category",
-          element: <ProductsPage />,
+          path: "products",
+          children: [
+            {
+              path: ":category",
+              element: <ProductsPage />,
+            },
+            {
+              path: "details/:id",
+              element: <ProductsDetail />,
+            },
+          ],
         },
         {
           path: "account",

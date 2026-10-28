@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import {
   Sparkles,
   Search,
@@ -13,7 +13,8 @@ import { MyStore } from "../context/MyContext";
 
 const Navbar = () => {
   let navigate = useNavigate();
-  let { setSearchData } = useContext(MyStore);
+  let { setSearchData, searchData } = useContext(MyStore);
+  const [hasSuggestion, setHasSuggestion] = useState(false);
   return (
     <header className="sticky top-0 z-40 border-b border-slate-100 bg-white/95 backdrop-blur-xl">
       <div className="mx-auto flex max-w-360 items-center justify-between gap-5 px-5 py-5 sm:px-8 lg:px-12">
@@ -34,14 +35,26 @@ const Navbar = () => {
         <div className="relative hidden max-w-xl flex-1 items-center gap-3 rounded-full border border-slate-200 bg-slate-50 px-5 py-3 transition md:flex">
           <Search className="h-5 w-5 text-slate-500" />
           <input
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                setHasSuggestion(false);
+              }
+            }}
             onChange={(e) => {
+              if (e.target.value.trim() === "") {
+                setHasSuggestion(false);
+              } else {
+                setHasSuggestion(true);
+              }
               setSearchData(e.target.value);
             }}
             type="text"
             className="text-sm text-slate-400 border-none outline-none"
             placeholder="Search for anything..."
           />
-          {/* <SearchSuggestions /> */}
+          {hasSuggestion && (
+            <SearchSuggestions setHasSuggestion={setHasSuggestion} />
+          )}
         </div>
 
         {/* Header Actions */}

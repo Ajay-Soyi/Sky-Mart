@@ -8,6 +8,7 @@ export const MyContextProvider = ({ children }) => {
   const [productsData, setProductsData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [searchData, setSearchData] = useState("");
+  const [cartData, setCartData] = useState([]);
   const { category } = useParams();
 
   const getProductsData = async () => {
@@ -32,7 +33,14 @@ export const MyContextProvider = ({ children }) => {
 
   return (
     <MyStore.Provider
-      value={{ productsData, filteredData, setSearchData, searchData }}
+      value={{
+        productsData,
+        filteredData,
+        setSearchData,
+        searchData,
+        cartData,
+        setCartData,
+      }}
     >
       {children}
     </MyStore.Provider>

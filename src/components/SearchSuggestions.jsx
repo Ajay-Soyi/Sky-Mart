@@ -1,28 +1,33 @@
 import { Search, Clock, TrendingUp, ArrowUpLeft, X } from "lucide-react";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { MyStore } from "../context/MyContext";
+import { useNavigate } from "react-router";
 
-const SearchSuggestions = () => {
+const SearchSuggestions = ({ setHasSuggestion }) => {
   const { searchData, productsData } = useContext(MyStore);
-  const [suggestions, setSuggestions] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
 
   // have to filter suggestions and then use debouncing .
-  const filteredSearchData = () => {};
+  const filteredSearchData = () => {
+    const tempSuggestedData = productsData.filter((elem) => {
+      return elem.title.toLowerCase().includes(searchData.toLowerCase());
+    });
+    setSuggestions(tempSuggestedData);
+  };
 
-  //   const suggestions = [
-  //     {
-  //       name: "Wireless Bluetooth Headphones",
-  //       category: "Electronics",
-  //     },
-  //     {
-  //       name: "Wireless Mouse",
-  //       category: "Electronics",
-  //     },
-  //     {
-  //       name: "Wireless Keyboard",
-  //       category: "Electronics",
-  //     },
-  // //   ];
+  // debouncing
+  useEffect(() => {
+    if (!searchData) return;
+    const timeout = setTimeout(() => {
+      filteredSearchData();
+    }, 700);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  });
+
+  const navigate = useNavigate();
 
   return (
     <div className="absolute left-0 right-0 top-full z-50 mt-2 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-xl">
@@ -37,6 +42,10 @@ const SearchSuggestions = () => {
         <div className="space-y-1">
           {suggestions.map((item, index) => (
             <div
+              onClick={() => {
+                navigate(`/products/${item.category}`);
+                setHasSuggestion(false);
+              }}
               key={index}
               className="flex cursor-pointer items-center gap-3 rounded-xl px-3 py-3 transition hover:bg-indigo-50"
             >
@@ -46,7 +55,7 @@ const SearchSuggestions = () => {
 
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-medium text-gray-800">
-                  {item.name}
+                  {item.title}
                 </p>
 
                 <p className="mt-0.5 text-xs text-gray-400">
