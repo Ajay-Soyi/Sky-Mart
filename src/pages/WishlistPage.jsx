@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   Heart,
   ShoppingBag,
@@ -8,43 +8,10 @@ import {
   ShoppingCart,
 } from "lucide-react";
 import Navbar from "../components/Navbar";
+import { MyStore } from "../context/MyContext";
 
 const WishlistPage = () => {
-  const wishlist = [
-    {
-      id: 1,
-      title: "Fjallraven Backpack",
-      category: "Men's Clothing",
-      price: 109.95,
-      rating: 3.9,
-      image: "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_t.png",
-    },
-    {
-      id: 2,
-      title: "Mens Casual Premium Slim Fit T-Shirts",
-      category: "Men's Clothing",
-      price: 22.3,
-      rating: 4.1,
-      image:
-        "https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg",
-    },
-    {
-      id: 3,
-      title: "Solid Gold Petite Micropavé",
-      category: "Jewelry",
-      price: 168,
-      rating: 4.8,
-      image: "https://fakestoreapi.com/img/61sbMiUnoGL._AC_UL640_QL65_ML3_.jpg",
-    },
-    {
-      id: 4,
-      title: "WD 2TB Elements Portable External Hard Drive",
-      category: "Electronics",
-      price: 64.99,
-      rating: 4.5,
-      image: "https://fakestoreapi.com/img/61IBBVJvSDL._AC_SY879_.jpg",
-    },
-  ];
+  const { wishlistData } = useContext(MyStore);
 
   return (
     <div>
@@ -78,7 +45,7 @@ const WishlistPage = () => {
               <Heart className="h-4 w-4 text-rose-500" />
               <span>
                 <span className="font-semibold text-slate-900">
-                  {wishlist.length}
+                  {wishlistData.length}
                 </span>{" "}
                 saved items
               </span>
@@ -86,7 +53,7 @@ const WishlistPage = () => {
           </div>
 
           {/* Wishlist Content */}
-          {wishlist.length > 0 ? (
+          {wishlistData.length > 0 ? (
             <>
               <div className="mb-5 flex items-center justify-between">
                 <h2 className="text-lg font-semibold text-slate-900">
@@ -99,7 +66,7 @@ const WishlistPage = () => {
               </div>
 
               <div className="grid grid-cols-2 items-stretch gap-4 sm:gap-5 md:grid-cols-3 xl:grid-cols-4">
-                {wishlist.map((product) => (
+                {wishlistData.map((product) => (
                   <article
                     key={product.id}
                     className="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white transition duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-slate-200/60"
@@ -132,11 +99,13 @@ const WishlistPage = () => {
 
                       <div className="mt-3 flex items-center gap-1.5">
                         <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
+
                         <span className="text-xs font-medium text-slate-600">
-                          {product.rating}
+                          {product.rating?.rate ?? "N/A"}
                         </span>
+
                         <span className="text-xs text-slate-400">
-                          Customer rating
+                          ({product.rating?.count ?? 0} reviews)
                         </span>
                       </div>
 

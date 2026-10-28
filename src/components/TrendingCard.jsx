@@ -2,17 +2,44 @@ import React, { useContext } from "react";
 import { Heart, Star, ShoppingCart } from "lucide-react";
 import { useNavigate } from "react-router";
 import { MyStore } from "../context/MyContext";
+import { toast } from "react-toastify";
+import QuantityBar from "./QuantityBar";
 
 const TrendingCard = ({ product }) => {
   const navigate = useNavigate();
-  const { setCartData, productsData } = useContext(MyStore);
+
+  const { cartData, setCartData, productsData, setWishlistData } =
+    useContext(MyStore);
   // have to continue from here ... add to cart logic ... go to cart page and update the logic.
+  const cartItem = cartData.find((elem) => elem.id === product.id);
+
   const addToCart = () => {
     const tempCartData = productsData.find((elem) => {
       return elem.id === product.id;
     });
+    if (tempCartData["quantity"]) {
+      tempCartData["quantity"] = tempCartData["quantity"] + 1;
+    } else {
+      tempCartData["quantity"] = 1;
+    }
+
     setCartData((prev) => [...prev, tempCartData]);
+    toast.success("Item added to cart!");
   };
+
+  const addToWishlist = () => {
+    const tempWishListArr = productsData.find((elem) => elem.id === product.id);
+    setWishlistData((prev) => [...prev, tempWishListArr]);
+    toast("Added to wishlist!", {
+      icon: "💗",
+      style: {
+        background: "#fce7f3",
+        color: "#be185d",
+        border: "1px solid #f9a8d4",
+      },
+    });
+  };
+
   return (
     <div className="cursor-pointer group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white transition duration-300 hover:-translate-y-1 hover:border-blue-200 hover:shadow-xl hover:shadow-slate-200/60">
       {/* Product Image */}
@@ -28,7 +55,13 @@ const TrendingCard = ({ product }) => {
           className="h-full w-full object-contain transition duration-500 group-hover:scale-105"
         />
 
-        <div className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-white text-slate-700 shadow-sm transition hover:text-rose-500">
+        <div
+          onClick={(e) => {
+            e.stopPropagation();
+            addToWishlist();
+          }}
+          className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-white text-slate-700 shadow-sm transition hover:text-rose-500"
+        >
           <Heart className="h-4 w-4" />
         </div>
       </div>
@@ -81,8 +114,14 @@ const TrendingCard = ({ product }) => {
           className="mt-auto pt-4"
         >
           <div className=" cursor-pointer flex min-h-10 items-center justify-center gap-2 rounded-xl bg-slate-900 px-3 py-2.5 text-xs font-semibold text-white transition group-hover:bg-blue-600 sm:text-sm">
-            <ShoppingCart className="h-4 w-4 shrink-0" />
-            Add to cart
+            {cartItem ? (
+              <QuantityBar quantity={cartItem.quantity} />
+            ) : (
+              <>
+                <ShoppingCart className="h-4 w-4 shrink-0" />
+                Add to cart
+              </>
+            )}
           </div>
         </div>
       </div>

@@ -9,6 +9,7 @@ export const MyContextProvider = ({ children }) => {
   const [filteredData, setFilteredData] = useState([]);
   const [searchData, setSearchData] = useState("");
   const [cartData, setCartData] = useState([]);
+  const [wishlistData, setWishlistData] = useState([]);
   const { category } = useParams();
 
   const getProductsData = async () => {
@@ -40,6 +41,8 @@ export const MyContextProvider = ({ children }) => {
         searchData,
         cartData,
         setCartData,
+        wishlistData,
+        setWishlistData,
       }}
     >
       {children}

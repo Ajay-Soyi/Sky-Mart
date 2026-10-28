@@ -57,10 +57,6 @@ const AccountPage = () => {
                     icon: UserRound,
                     active: true,
                   },
-                  { label: "My Orders", icon: Package },
-                  { label: "Saved Addresses", icon: MapPin },
-                  { label: "Wishlist", icon: Heart },
-                  { label: "Account Settings", icon: Settings },
                 ].map((item) => (
                   <div
                     key={item.label}

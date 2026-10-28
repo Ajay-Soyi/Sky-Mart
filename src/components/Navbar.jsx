@@ -13,7 +13,7 @@ import { MyStore } from "../context/MyContext";
 
 const Navbar = () => {
   let navigate = useNavigate();
-  let { setSearchData, searchData } = useContext(MyStore);
+  let { setSearchData, searchData, cartData } = useContext(MyStore);
   const [hasSuggestion, setHasSuggestion] = useState(false);
   return (
     <header className="sticky top-0 z-40 border-b border-slate-100 bg-white/95 backdrop-blur-xl">
@@ -88,7 +88,7 @@ const Navbar = () => {
             <ShoppingCart className="h-6 w-6" />
             <span className="hidden text-sm font-medium sm:inline">Cart</span>
             <span className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-blue-600 text-[10px] font-bold text-white">
-              0
+              {cartData.length}
             </span>
           </div>
 

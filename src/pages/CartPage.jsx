@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useContext } from "react";
 import {
   ShoppingCart,
   ArrowLeft,
@@ -11,32 +11,17 @@ import {
   LockKeyhole,
 } from "lucide-react";
 import Navbar from "../components/Navbar";
+import { MyStore } from "../context/MyContext";
 
 const CartPage = () => {
-  const cartItems = [
-    {
-      id: 1,
-      title: "Fjallraven Backpack",
-      category: "Men's Clothing",
-      price: 109.95,
-      quantity: 1,
-      image: "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_t.png",
-    },
-    {
-      id: 2,
-      title: "Mens Casual Premium Slim Fit T-Shirts",
-      category: "Men's Clothing",
-      price: 22.3,
-      quantity: 2,
-      image:
-        "https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg",
-    },
-  ];
+  const { cartData } = useContext(MyStore);
+  const cartItems = cartData;
 
-  const subtotal = cartItems.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0,
-  );
+  const subtotal = useCallback(() => {
+    return cartItems.reduce((total, elem) => {
+      return (total += elem.price);
+    }, 0);
+  }, [cartData]);
 
   return (
     <div>
@@ -166,7 +151,7 @@ const CartPage = () => {
                     <div className="flex justify-between gap-4 text-slate-500">
                       <span>Subtotal</span>
                       <span className="font-medium text-slate-800">
-                        ${subtotal.toFixed(2)}
+                        ${subtotal().toFixed(2)}
                       </span>
                     </div>
 
@@ -186,7 +171,7 @@ const CartPage = () => {
                           Total
                         </span>
                         <span className="text-2xl font-bold tracking-tight text-slate-900">
-                          ${subtotal.toFixed(2)}
+                          ${subtotal().toFixed(2)}
                         </span>
                       </div>
                       <p className="mt-1 text-right text-xs text-slate-400">
