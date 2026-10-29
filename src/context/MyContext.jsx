@@ -10,6 +10,12 @@ export const MyContextProvider = ({ children }) => {
   const [searchData, setSearchData] = useState("");
   const [cartData, setCartData] = useState([]);
   const [wishlistData, setWishlistData] = useState([]);
+  const [registeredUsers, setRegisteredUsers] = useState(
+    JSON.parse(localStorage.getItem("registeredUsers")) || [],
+  );
+  const [loggedInUser, setLoggedInUser] = useState(
+    JSON.parse(localStorage.getItem("loggedInUser")) || null,
+  );
   const { category } = useParams();
 
   const getProductsData = async () => {
@@ -43,6 +49,10 @@ export const MyContextProvider = ({ children }) => {
         setCartData,
         wishlistData,
         setWishlistData,
+        registeredUsers,
+        setRegisteredUsers,
+        loggedInUser,
+        setLoggedInUser,
       }}
     >
       {children}

@@ -7,10 +7,8 @@ import { ToastContainer } from "react-toastify";
 const MainLayout = () => {
   return (
     <div>
-      <MyContextProvider>
-        <ToastContainer />
-        <Outlet />
-      </MyContextProvider>
+      <ToastContainer />
+      <Outlet />
     </div>
   );
 };

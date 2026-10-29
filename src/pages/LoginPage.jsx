@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   Sparkles,
   ShoppingBag,
@@ -9,8 +9,41 @@ import {
   Truck,
   ShieldCheck,
 } from "lucide-react";
+import { MyStore } from "../context/MyContext";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
 
 const Login = () => {
+  let {
+    register,
+    handleSubmit,
+    reset,
+    setError,
+    formState: { errors },
+  } = useForm({
+    mode: "onChange",
+  });
+
+  const { setLoggedInUser, registeredUsers } = useContext(MyStore);
+  let navigate = useNavigate();
+
+  const loginFormSubmit = (data) => {
+    const user = registeredUsers.find(
+      (elem) => elem.email === data.email && elem.password === data.password,
+    );
+    if (!user) {
+      setError("root", {
+        type: "manual",
+        message: "Invalid email or password",
+      });
+    } else {
+      setLoggedInUser(user);
+      localStorage.setItem("loggedInUser", JSON.stringify(user));
+      navigate("/main");
+      // continue from here....
+    }
+  };
+
   return (
     <div className="flex min-h-screen flex-col bg-white text-slate-800">
       {/* Main */}
@@ -111,7 +144,10 @@ const Login = () => {
               </p>
             </div>
 
-            <form className="space-y-5">
+            <form
+              onSubmit={handleSubmit(loginFormSubmit)}
+              className="space-y-5"
+            >
               {/* Email */}
               <div>
                 <label
@@ -124,6 +160,13 @@ const Login = () => {
                 <div className="flex h-11 items-center gap-3 rounded-lg border border-slate-300 px-3.5 transition focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-100">
                   <Mail size={17} className="shrink-0 text-slate-400" />
                   <input
+                    {...register("email", {
+                      required: "Email is required",
+                      pattern: {
+                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                        message: "Enter a valid email address",
+                      },
+                    })}
                     id="email"
                     type="email"
                     autoComplete="email"
@@ -131,6 +174,9 @@ const Login = () => {
                     className="h-full min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-slate-400"
                   />
                 </div>
+                {errors.email && (
+                  <small className="text-red-500">{errors.email.message}</small>
+                )}
               </div>
 
               {/* Password */}
@@ -154,6 +200,15 @@ const Login = () => {
                 <div className="flex h-11 items-center gap-3 rounded-lg border border-slate-300 px-3.5 transition focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-100">
                   <LockKeyhole size={17} className="shrink-0 text-slate-400" />
                   <input
+                    {...register("password", {
+                      required: "Password is required",
+                      pattern: {
+                        value:
+                          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                        message:
+                          "Use 8+ characters, including uppercase and lowercase letters, a number, and a special character.",
+                      },
+                    })}
                     id="password"
                     type="password"
                     autoComplete="current-password"
@@ -168,6 +223,14 @@ const Login = () => {
                     <Eye size={17} />
                   </button>
                 </div>
+                {errors.password && (
+                  <small className="text-red-500">
+                    {errors.password.message}
+                  </small>
+                )}
+                {errors.root && (
+                  <small className="text-red-500">{errors.root.message}</small>
+                )}
               </div>
 
               {/* Remember me */}

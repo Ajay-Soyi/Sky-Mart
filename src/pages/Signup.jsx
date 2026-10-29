@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
+import { nanoid } from "nanoid";
 import {
   Sparkles,
   UserRound,
@@ -8,6 +9,7 @@ import {
   ArrowRight,
   CheckCircle2,
 } from "lucide-react";
+import { MyStore } from "../context/MyContext";
 
 const Signup = () => {
   let {
@@ -19,6 +21,24 @@ const Signup = () => {
   } = useForm({
     mode: "onChange",
   });
+
+  const { setRegisteredUsers, registeredUsers } = useContext(MyStore);
+
+  const formSubmit = (data) => {
+    const { confirmPassword, ...formData } = data;
+    // make a use state , then store form data there , then store it in local storage.
+    const tempRegisteredUsers = [
+      ...registeredUsers,
+      { ...formData, id: nanoid() },
+    ];
+    console.log(tempRegisteredUsers);
+    setRegisteredUsers(tempRegisteredUsers);
+    localStorage.setItem(
+      "registeredUsers",
+      JSON.stringify(tempRegisteredUsers),
+    );
+    reset();
+  };
 
   return (
     <div className="relative flex min-h-screen flex-col bg-slate-50 text-slate-800">
@@ -60,7 +80,7 @@ const Signup = () => {
                 </p>
               </div>
 
-              <form className="space-y-4">
+              <form onSubmit={handleSubmit(formSubmit)} className="space-y-4">
                 {/* Name Fields */}
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <div>
@@ -90,6 +110,11 @@ const Signup = () => {
                         className="w-full min-w-0 bg-transparent py-3 text-sm outline-none placeholder:text-slate-400"
                       />
                     </div>
+                    {errors.firstName && (
+                      <small className="text-red-500">
+                        {errors.firstName.message}
+                      </small>
+                    )}
                   </div>
 
                   <div>
@@ -114,6 +139,11 @@ const Signup = () => {
                       className="w-full rounded-lg border border-slate-200 px-3.5 py-3 text-sm outline-none placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                     />
                   </div>
+                  {errors.lastName && (
+                    <small className="text-red-500">
+                      {errors.lastName.message}
+                    </small>
+                  )}
                 </div>
 
                 {/* Email */}
@@ -141,6 +171,11 @@ const Signup = () => {
                       className="w-full min-w-0 bg-transparent py-3 text-sm outline-none placeholder:text-slate-400"
                     />
                   </div>
+                  {errors.email && (
+                    <small className="text-red-500">
+                      {errors.email.message}
+                    </small>
+                  )}
                 </div>
 
                 {/* Password Fields */}
@@ -165,7 +200,7 @@ const Signup = () => {
                             value:
                               /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
                             message:
-                              "Use 8+ characters with uppercase, lowercase, a number, and a special character",
+                              "Use 8+ characters, including uppercase and lowercase letters, a number, and a special character.",
                           },
                         })}
                         id="password"
@@ -174,6 +209,11 @@ const Signup = () => {
                         className="w-full min-w-0 bg-transparent py-3 text-sm outline-none placeholder:text-slate-400"
                       />
                     </div>
+                    {errors.password && (
+                      <small className="text-red-500">
+                        {errors.password.message}
+                      </small>
+                    )}
                   </div>
 
                   <div>
@@ -205,6 +245,11 @@ const Signup = () => {
                         className="w-full min-w-0 bg-transparent py-3 text-sm outline-none placeholder:text-slate-400"
                       />
                     </div>
+                    {errors.confirmPassword && (
+                      <small className="text-red-500">
+                        {errors.confirmPassword.message}
+                      </small>
+                    )}
                   </div>
                 </div>
 
