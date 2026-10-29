@@ -15,10 +15,9 @@ import { MyStore } from "../context/MyContext";
 
 const CartPage = () => {
   const { cartData } = useContext(MyStore);
-  const cartItems = cartData;
 
   const subtotal = useCallback(() => {
-    return cartItems.reduce((total, elem) => {
+    return cartData.reduce((total, elem) => {
       return (total += elem.price);
     }, 0);
   }, [cartData]);
@@ -51,23 +50,23 @@ const CartPage = () => {
 
             <div className="flex items-center gap-2 text-sm text-slate-500">
               <ShoppingCart className="h-4 w-4 text-blue-600" />
-              {cartItems.length} items in your cart
+              {cartData.length} items in your cart
             </div>
           </div>
 
-          {cartItems.length > 0 ? (
+          {cartData.length > 0 ? (
             <div className="grid items-start gap-6 lg:grid-cols-[1fr_360px]">
               {/* Cart Items */}
               <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
                 <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4 sm:px-6">
                   <h2 className="font-semibold text-slate-900">Cart Items</h2>
                   <span className="text-sm text-slate-400">
-                    {cartItems.length} products
+                    {cartData.length} products
                   </span>
                 </div>
 
                 <div className="divide-y divide-slate-100">
-                  {cartItems.map((item) => (
+                  {cartData.map((item) => (
                     <article
                       key={item.id}
                       className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:p-6"

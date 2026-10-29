@@ -21,7 +21,7 @@ const Navbar = () => {
         {/* Logo */}
         <div
           onClick={() => {
-            navigate("/");
+            navigate("/main");
           }}
           className="flex shrink-0 items-center gap-2 cursor-pointer"
         >
@@ -61,7 +61,7 @@ const Navbar = () => {
         <div className="flex items-center gap-4 sm:gap-6">
           <div
             onClick={() => {
-              navigate("/account");
+              navigate("/main/account");
             }}
             className="hidden cursor-pointer items-center gap-2 text-sm font-medium hover:text-blue-600 sm:flex"
           >
@@ -71,7 +71,7 @@ const Navbar = () => {
 
           <div
             onClick={() => {
-              navigate("/wishlist");
+              navigate("/main/wishlist");
             }}
             className="hidden cursor-pointer items-center gap-2 text-sm font-medium hover:text-blue-600 md:flex"
           >
@@ -81,7 +81,7 @@ const Navbar = () => {
 
           <div
             onClick={() => {
-              navigate("/cart");
+              navigate("/main/cart");
             }}
             className="relative flex cursor-pointer items-center gap-2 hover:text-blue-600"
           >

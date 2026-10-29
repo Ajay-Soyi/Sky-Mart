@@ -1,25 +1,54 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Plus, Minus } from "lucide-react";
+import { MyStore } from "../context/MyContext";
 
-const QuantityBar = ({ quantity }) => {
+const QuantityBar = ({ id, quantity }) => {
   if (quantity <= 0) return null;
 
+  const { cartData, setCartData } = useContext(MyStore);
+
+  const incrementCartItems = () => {
+    const tempCartData = cartData.map((elem) => {
+      if (elem.id === id) {
+        return { ...elem, quantity: elem.quantity + 1 };
+      }
+      return elem;
+    });
+    setCartData(tempCartData);
+  };
+
+  const decrementCartItems = () => {
+    const tempCartData = cartData.map((elem) => {
+      if (elem.id === id) {
+        return { ...elem, quantity: elem.quantity - 1 };
+      }
+      return elem;
+    });
+    setCartData(tempCartData);
+  };
+
   return (
-    <div className="flex w-full items-center justify-between overflow-hidden rounded-xl border border-slate-200 bg-white">
+    <div className="flex w-full items-center justify-between rounded-xl border border-slate-200 bg-slate-100/70 p-1">
       <button
-        onClick={onDecrease}
+        onClick={() => {
+          decrementCartItems();
+        }}
         aria-label="Decrease quantity"
-        className="flex h-10 w-10 items-center justify-center text-slate-600 transition hover:bg-rose-50 hover:text-rose-600"
+        className="flex h-9 w-10 items-center justify-center rounded-lg bg-white text-slate-600 shadow-sm transition hover:bg-rose-50 hover:text-rose-600 active:scale-95"
       >
         <Minus className="h-4 w-4" />
       </button>
 
-      <span className="text-sm font-semibold text-slate-900">{quantity}</span>
+      <span className="min-w-10 text-center text-sm font-bold text-slate-800">
+        {quantity}
+      </span>
 
       <button
-        onClick={onIncrease}
+        onClick={() => {
+          incrementCartItems();
+        }}
         aria-label="Increase quantity"
-        className="flex h-10 w-10 items-center justify-center text-slate-600 transition hover:bg-blue-50 hover:text-blue-600"
+        className="flex h-9 w-10 items-center justify-center rounded-lg bg-white text-slate-600 shadow-sm transition hover:bg-blue-50 hover:text-blue-600 active:scale-95"
       >
         <Plus className="h-4 w-4" />
       </button>

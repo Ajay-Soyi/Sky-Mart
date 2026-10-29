@@ -107,23 +107,24 @@ const TrendingCard = ({ product }) => {
         </div>
 
         {/* Button - Always pushed to the bottom */}
-        <div
-          onClick={() => {
-            addToCart();
-          }}
-          className="mt-auto pt-4"
-        >
-          <div className=" cursor-pointer flex min-h-10 items-center justify-center gap-2 rounded-xl bg-slate-900 px-3 py-2.5 text-xs font-semibold text-white transition group-hover:bg-blue-600 sm:text-sm">
-            {cartItem ? (
-              <QuantityBar quantity={cartItem.quantity} />
-            ) : (
-              <>
-                <ShoppingCart className="h-4 w-4 shrink-0" />
-                Add to cart
-              </>
-            )}
+
+        {cartItem ? (
+          <div>
+            <QuantityBar id={cartItem.id} quantity={cartItem.quantity} />
           </div>
-        </div>
+        ) : (
+          <div
+            onClick={() => {
+              addToCart();
+            }}
+            className="mt-auto pt-4"
+          >
+            <div className=" cursor-pointer flex min-h-10 items-center justify-center gap-2 rounded-xl bg-slate-900 px-3 py-2.5 text-xs font-semibold text-white transition group-hover:bg-blue-600 sm:text-sm">
+              <ShoppingCart className="h-4 w-4 shrink-0" />
+              Add to cart
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

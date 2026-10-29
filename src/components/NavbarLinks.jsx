@@ -2,10 +2,10 @@ import React from "react";
 import { useNavigate } from "react-router";
 
 const categories = [
-  { name: "Electronics", path: "/products/electronics" },
-  { name: "Men's Clothing", path: "/products/men's-clothing" },
-  { name: "Women's Clothing", path: "/products/women's-clothing" },
-  { name: "Jewelery", path: "/products/jewelery" },
+  { name: "Electronics", path: "/main/products/electronics" },
+  { name: "Men's Clothing", path: "/main/products/men's-clothing" },
+  { name: "Women's Clothing", path: "/main/products/women's-clothing" },
+  { name: "Jewelery", path: "/main/products/jewelery" },
 ];
 
 const NavbarLinks = () => {

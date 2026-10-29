@@ -3,6 +3,9 @@ import React from "react";
 import Home from "../pages/Home";
 import { lazy } from "react";
 import { Suspense } from "react";
+import AuthLayout from "../layouts/AuthLayout";
+import Login from "../pages/LoginPage";
+import Signup from "../pages/Signup";
 
 let ProductsPage = lazy(() => import("../pages/ProductsPage"));
 let MainLayout = lazy(() => import("../layouts/MainLayout"));
@@ -15,6 +18,20 @@ const AppRoute = () => {
   const router = createBrowserRouter([
     {
       path: "/",
+      element: <AuthLayout />,
+      children: [
+        {
+          path: "",
+          element: <Login />,
+        },
+        {
+          path: "signup",
+          element: <Signup />,
+        },
+      ],
+    },
+    {
+      path: "/main",
       element: <MainLayout />,
       children: [
         {
