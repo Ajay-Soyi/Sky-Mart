@@ -40,7 +40,6 @@ const Login = () => {
       setLoggedInUser(user);
       localStorage.setItem("loggedInUser", JSON.stringify(user));
       navigate("/main");
-      // continue from here....
     }
   };
 
@@ -189,12 +188,14 @@ const Login = () => {
                     Password
                   </label>
 
-                  <a
-                    href="/forgot-password"
-                    className="text-xs font-medium text-blue-600 hover:text-blue-700"
+                  <p
+                    onClick={() => {
+                      navigate("/forgot-password");
+                    }}
+                    className="text-xs font-medium text-blue-600 hover:text-blue-700 cursor-pointer"
                   >
                     Forgot password?
-                  </a>
+                  </p>
                 </div>
 
                 <div className="flex h-11 items-center gap-3 rounded-lg border border-slate-300 px-3.5 transition focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-100">
