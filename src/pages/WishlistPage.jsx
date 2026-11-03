@@ -9,9 +9,39 @@ import {
 } from "lucide-react";
 import Navbar from "../components/Navbar";
 import { MyStore } from "../context/MyContext";
+import { Navigate, useNavigate } from "react-router";
 
 const WishlistPage = () => {
-  const { wishlistData } = useContext(MyStore);
+  const { wishlistData, setWishlistData, setCartData, productsData, cartData } =
+    useContext(MyStore);
+
+  const removeProductWishlist = (id) => {
+    const tempWishlistData = wishlistData.filter((elem) => elem.id !== id);
+    setWishlistData(tempWishlistData);
+    localStorage.setItem("wishlistData", JSON.stringify(tempWishlistData));
+  };
+
+  const clearAllWishlist = () => {
+    setWishlistData([]);
+    localStorage.setItem("wishlistData", JSON.stringify([]));
+  };
+
+  const addToCart = (id) => {
+    const tempCartData = productsData.find((elem) => {
+      return elem.id === id;
+    });
+    if (tempCartData["quantity"]) {
+      tempCartData["quantity"] = tempCartData["quantity"] + 1;
+    } else {
+      tempCartData["quantity"] = 1;
+    }
+
+    setCartData((prev) => [...prev, tempCartData]);
+    removeProductWishlist(id);
+    toast.success("Item added to cart!");
+  };
+
+  let navigate = useNavigate();
 
   return (
     <div>
@@ -60,7 +90,12 @@ const WishlistPage = () => {
                   Saved for later
                 </h2>
 
-                <button className="text-sm font-medium text-slate-500 transition hover:text-rose-500">
+                <button
+                  onClick={() => {
+                    clearAllWishlist();
+                  }}
+                  className="text-sm font-medium text-slate-500 transition hover:text-rose-500"
+                >
                   Clear all
                 </button>
               </div>
@@ -80,6 +115,9 @@ const WishlistPage = () => {
                       />
 
                       <button
+                        onClick={() => {
+                          removeProductWishlist(product.id);
+                        }}
                         aria-label="Remove from wishlist"
                         className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full border border-slate-100 bg-white text-rose-500 shadow-sm transition hover:bg-rose-50"
                       >
@@ -119,7 +157,12 @@ const WishlistPage = () => {
                         </span>
                       </div>
 
-                      <button className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-3 py-3 text-sm font-semibold text-white transition hover:bg-blue-600">
+                      <button
+                        onClick={() => {
+                          addToCart(product.id);
+                        }}
+                        className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-3 py-3 text-sm font-semibold text-white transition hover:bg-blue-600"
+                      >
                         <ShoppingCart className="h-4 w-4" />
                         Add to Cart
                       </button>
@@ -167,7 +210,12 @@ const WishlistPage = () => {
                 ready to shop.
               </p>
 
-              <button className="mt-6 flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-700">
+              <button
+                onClick={() => {
+                  navigate("/main");
+                }}
+                className="mt-6 flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-700"
+              >
                 Explore Products
                 <ArrowRight className="h-4 w-4" />
               </button>

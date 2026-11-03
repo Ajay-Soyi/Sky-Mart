@@ -8,6 +8,7 @@ import Login from "../pages/LoginPage";
 import Signup from "../pages/Signup";
 import MainProtectedRoute from "./protected/MainProtectedRoute";
 import ForgotPassword from "../pages/ForgotPassword";
+import OrdersPage from "../pages/OrderPage";
 
 let ProductsPage = lazy(() => import("../pages/ProductsPage"));
 let MainLayout = lazy(() => import("../layouts/MainLayout"));
@@ -90,6 +91,14 @@ const AppRoute = () => {
               element: (
                 <Suspense fallback={<h1>Loading data...</h1>}>
                   <CartPage />
+                </Suspense>
+              ),
+            },
+            {
+              path: "orders",
+              element: (
+                <Suspense fallback={<h1>Loading data...</h1>}>
+                  <OrdersPage />
                 </Suspense>
               ),
             },

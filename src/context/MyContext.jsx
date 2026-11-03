@@ -8,15 +8,18 @@ export const MyContextProvider = ({ children }) => {
   const [productsData, setProductsData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [searchData, setSearchData] = useState("");
-  const [cartData, setCartData] = useState([]);
-  const [wishlistData, setWishlistData] = useState([]);
+  const [cartData, setCartData] = useState(
+    JSON.parse(localStorage.getItem("cartData")) || [],
+  );
+  const [wishlistData, setWishlistData] = useState(
+    JSON.parse(localStorage.getItem("wishlistData")) || [],
+  );
   const [registeredUsers, setRegisteredUsers] = useState(
     JSON.parse(localStorage.getItem("registeredUsers")) || [],
   );
   const [loggedInUser, setLoggedInUser] = useState(
     JSON.parse(localStorage.getItem("loggedInUser")) || null,
   );
-  const { category } = useParams();
 
   const getProductsData = async () => {
     try {
@@ -28,13 +31,6 @@ export const MyContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    const tempFilteredData = productsData.filter(
-      (elem) => elem.category === category,
-    );
-    setFilteredData(tempFilteredData);
-  }, [category, productsData]);
-
-  useEffect(() => {
     getProductsData();
   }, []);
 
@@ -43,6 +39,7 @@ export const MyContextProvider = ({ children }) => {
       value={{
         productsData,
         filteredData,
+        setFilteredData,
         setSearchData,
         searchData,
         cartData,

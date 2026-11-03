@@ -12,16 +12,40 @@ import {
 } from "lucide-react";
 import Navbar from "../components/Navbar";
 import { MyStore } from "../context/MyContext";
+import { toast } from "react-toastify";
 
 const CartPage = () => {
-  const { cartData } = useContext(MyStore);
+  const { cartData, setCartData } = useContext(MyStore);
 
   const subtotal = useCallback(() => {
     return cartData.reduce((total, elem) => {
-      return (total += elem.price);
+      return total + elem.price * elem.quantity;
     }, 0);
   }, [cartData]);
 
+  const incrementCartItems = (id) => {
+    const tempCartData = cartData.map((elem) => {
+      if (elem.id === id) {
+        return { ...elem, quantity: elem.quantity + 1 };
+      }
+      return elem;
+    });
+    setCartData(tempCartData);
+    localStorage.setItem("cartData", JSON.stringify(tempCartData));
+  };
+
+  const decrementCartItems = (id) => {
+    let tempCartData = cartData.map((elem) => {
+      if (elem.id === id) {
+        return { ...elem, quantity: elem.quantity - 1 };
+      }
+      return elem;
+    });
+    tempCartData = tempCartData.filter((elem) => elem.quantity != 0);
+
+    setCartData(tempCartData);
+    localStorage.setItem("cartData", JSON.stringify(tempCartData));
+  };
   return (
     <div>
       <Navbar />
@@ -104,6 +128,9 @@ const CartPage = () => {
                       <div className="flex items-center justify-between gap-5 sm:flex-col sm:items-end sm:gap-4">
                         <div className="flex items-center rounded-xl border border-slate-200">
                           <button
+                            onClick={() => {
+                              decrementCartItems(item.id);
+                            }}
                             aria-label="Decrease quantity"
                             className="flex h-9 w-9 items-center justify-center text-slate-500 transition hover:bg-slate-50"
                           >
@@ -115,6 +142,9 @@ const CartPage = () => {
                           </span>
 
                           <button
+                            onClick={() => {
+                              incrementCartItems(item.id);
+                            }}
                             aria-label="Increase quantity"
                             className="flex h-9 w-9 items-center justify-center text-slate-500 transition hover:bg-slate-50"
                           >

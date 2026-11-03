@@ -15,16 +15,19 @@ const QuantityBar = ({ id, quantity }) => {
       return elem;
     });
     setCartData(tempCartData);
+    localStorage.setItem("cartData", JSON.stringify(tempCartData));
   };
 
   const decrementCartItems = () => {
-    const tempCartData = cartData.map((elem) => {
+    let tempCartData = cartData.map((elem) => {
       if (elem.id === id) {
         return { ...elem, quantity: elem.quantity - 1 };
       }
       return elem;
     });
+    tempCartData = tempCartData.filter((elem) => elem.quantity != 0);
     setCartData(tempCartData);
+    localStorage.setItem("cartData", JSON.stringify(tempCartData));
   };
 
   return (

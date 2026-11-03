@@ -43,7 +43,7 @@ const SearchSuggestions = ({ setHasSuggestion }) => {
           {suggestions.map((item, index) => (
             <div
               onClick={() => {
-                navigate(`/products/${item.category}`);
+                navigate(`/main/products/${item.category}`);
                 setHasSuggestion(false);
               }}
               key={index}

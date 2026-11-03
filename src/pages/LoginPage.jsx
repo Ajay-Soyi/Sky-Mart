@@ -12,6 +12,7 @@ import {
 import { MyStore } from "../context/MyContext";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
 
 const Login = () => {
   let {
@@ -36,6 +37,7 @@ const Login = () => {
         type: "manual",
         message: "Invalid email or password",
       });
+      toast.error("Invalid username or password");
     } else {
       setLoggedInUser(user);
       localStorage.setItem("loggedInUser", JSON.stringify(user));

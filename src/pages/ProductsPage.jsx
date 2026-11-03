@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { SlidersHorizontal, LayoutGrid, List, Search } from "lucide-react";
 import TrendingCard from "../components/TrendingCard";
 import { useParams } from "react-router";
@@ -8,7 +8,15 @@ import Navbar from "../components/Navbar";
 
 const ProductsPage = () => {
   const { category } = useParams();
-  const { filteredData } = useContext(MyStore);
+  const { productsData, setFilteredData, filteredData } = useContext(MyStore);
+
+  useEffect(() => {
+    const tempFilteredData = productsData.filter(
+      (elem) => elem.category === category,
+    );
+
+    setFilteredData(tempFilteredData);
+  }, [category, productsData]);
 
   return (
     <div>

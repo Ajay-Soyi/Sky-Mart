@@ -8,7 +8,7 @@ import QuantityBar from "./QuantityBar";
 const TrendingCard = ({ product }) => {
   const navigate = useNavigate();
 
-  const { cartData, setCartData, productsData, setWishlistData } =
+  const { cartData, setCartData, productsData, setWishlistData, wishlistData } =
     useContext(MyStore);
   // have to continue from here ... add to cart logic ... go to cart page and update the logic.
   const cartItem = cartData.find((elem) => elem.id === product.id);
@@ -17,19 +17,22 @@ const TrendingCard = ({ product }) => {
     const tempCartData = productsData.find((elem) => {
       return elem.id === product.id;
     });
+    console.log(productsData);
     if (tempCartData["quantity"]) {
       tempCartData["quantity"] = tempCartData["quantity"] + 1;
     } else {
       tempCartData["quantity"] = 1;
     }
-
-    setCartData((prev) => [...prev, tempCartData]);
+    const tempCartArr = [...cartData, tempCartData];
+    setCartData(tempCartArr);
+    localStorage.setItem("cartData", JSON.stringify(tempCartArr));
     toast.success("Item added to cart!");
   };
 
   const addToWishlist = () => {
     const tempWishListArr = productsData.find((elem) => elem.id === product.id);
-    setWishlistData((prev) => [...prev, tempWishListArr]);
+    const tempWishListData = [...wishlistData, tempWishListArr];
+    setWishlistData(tempWishListData);
     toast("Added to wishlist!", {
       icon: "💗",
       style: {
@@ -38,6 +41,7 @@ const TrendingCard = ({ product }) => {
         border: "1px solid #f9a8d4",
       },
     });
+    localStorage.setItem("wishlistData", JSON.stringify(tempWishListData));
   };
 
   return (
@@ -45,7 +49,7 @@ const TrendingCard = ({ product }) => {
       {/* Product Image */}
       <div
         onClick={() => {
-          navigate(`/products/details/${product.id}`);
+          navigate(`/main/products/details/${product.id}`);
         }}
         className="relative flex h-44 shrink-0 items-center justify-center bg-slate-50 p-5 sm:h-60 sm:p-7"
       >

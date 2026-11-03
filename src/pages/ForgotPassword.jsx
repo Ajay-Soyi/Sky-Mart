@@ -12,6 +12,8 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { useContext } from "react";
 import { MyStore } from "../context/MyContext";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router";
 
 const ForgotPassword = () => {
   const {
@@ -26,10 +28,27 @@ const ForgotPassword = () => {
   });
   const [forgotPassUser, setForgotPassUser] = useState(null);
   const { registeredUsers, setRegisteredUsers } = useContext(MyStore);
+  let navigate = useNavigate();
 
   const forgetPasswordFormSubmit = (data) => {
-    // write logic from here...
+    const registeredUser = registeredUsers.some(
+      (user) => user.email === data.email,
+    );
+    if (!registeredUser) {
+      toast.error("No account found with this email address.");
+      return;
+    }
 
+    const tempRegisteredUser = registeredUsers.map((user) => {
+      if (user.email === data.email) {
+        user.password = data.password;
+      }
+      return user;
+    });
+    setRegisteredUsers(tempRegisteredUser);
+    localStorage.setItem("registeredUsers", JSON.stringify(tempRegisteredUser));
+    toast.success("Password updated successfully! You can now sign in.");
+    navigate("/");
   };
 
   return (
@@ -163,13 +182,15 @@ const ForgotPassword = () => {
         </form>
 
         <div className="mt-6 border-t border-slate-100 pt-5">
-          <a
-            href="/login"
-            className="flex items-center justify-center gap-2 text-sm font-semibold text-slate-600 transition hover:text-blue-600"
+          <p
+            onClick={() => {
+              navigate("/");
+            }}
+            className="flex items-center justify-center gap-2 text-sm font-semibold text-slate-600 transition hover:text-blue-600 cursor-pointer"
           >
             <ArrowLeft size={16} />
             Back to sign in
-          </a>
+          </p>
         </div>
       </div>
     </div>

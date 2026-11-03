@@ -10,6 +10,8 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import { MyStore } from "../context/MyContext";
+import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
 
 const Signup = () => {
   let {
@@ -23,6 +25,7 @@ const Signup = () => {
   });
 
   const { setRegisteredUsers, registeredUsers } = useContext(MyStore);
+  let navigate = useNavigate();
 
   const formSubmit = (data) => {
     const { confirmPassword, ...formData } = data;
@@ -38,6 +41,8 @@ const Signup = () => {
       JSON.stringify(tempRegisteredUsers),
     );
     reset();
+    toast.success("User registered successfully!");
+    navigate("/");
   };
 
   return (

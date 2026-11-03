@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   UserRound,
   Package,
@@ -13,8 +13,13 @@ import {
   LogOut,
 } from "lucide-react";
 import Navbar from "../components/Navbar";
+import { MyStore } from "../context/MyContext";
+import { useNavigate } from "react-router";
 
 const AccountPage = () => {
+  const { loggedInUser, setLoggedInUser } = useContext(MyStore);
+  let navigate = useNavigate();
+
   return (
     <div>
       <Navbar />
@@ -42,10 +47,10 @@ const AccountPage = () => {
                 </div>
                 <div className="min-w-0">
                   <h2 className="truncate font-semibold text-slate-900">
-                    Alex Morgan
+                    {loggedInUser.firstName} {loggedInUser.lastName}
                   </h2>
                   <p className="truncate text-sm text-slate-500">
-                    alex@example.com
+                    {loggedInUser.email}
                   </p>
                 </div>
               </div>
@@ -73,7 +78,13 @@ const AccountPage = () => {
                 ))}
               </nav>
 
-              <button className="mt-5 flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium text-red-500 transition hover:bg-red-50">
+              <button
+                onClick={() => {
+                  setLoggedInUser(null);
+                  localStorage.removeItem("loggedInUser");
+                }}
+                className="mt-5 flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium text-red-500 transition hover:bg-red-50"
+              >
                 <LogOut className="h-4 w-4" />
                 Sign Out
               </button>
@@ -92,9 +103,6 @@ const AccountPage = () => {
                       Update your personal details and profile.
                     </p>
                   </div>
-                  <button className="w-fit rounded-xl border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50">
-                    Edit Profile
-                  </button>
                 </div>
 
                 <div className="mt-7 flex flex-col items-start gap-5 border-b border-slate-100 pb-7 sm:flex-row sm:items-center">
@@ -106,11 +114,9 @@ const AccountPage = () => {
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-slate-900">
-                      Alex Morgan
+                      {loggedInUser.firstName} {loggedInUser.lastName}
                     </h3>
-                    <p className="mt-1 text-sm text-slate-500">
-                      Member since October 2026
-                    </p>
+
                     <p className="mt-2 inline-flex items-center gap-1.5 text-xs font-medium text-emerald-600">
                       <ShieldCheck className="h-3.5 w-3.5" />
                       Account verified
@@ -125,7 +131,7 @@ const AccountPage = () => {
                       Full Name
                     </p>
                     <p className="mt-2 text-sm font-medium text-slate-800">
-                      Alex Morgan
+                      {loggedInUser.firstName} {loggedInUser.lastName}
                     </p>
                   </div>
 
@@ -135,27 +141,7 @@ const AccountPage = () => {
                     </p>
                     <div className="mt-2 flex items-center gap-2 text-sm font-medium text-slate-800">
                       <Mail className="h-4 w-4 text-slate-400" />
-                      alex@example.com
-                    </div>
-                  </div>
-
-                  <div>
-                    <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
-                      Phone Number
-                    </p>
-                    <div className="mt-2 flex items-center gap-2 text-sm font-medium text-slate-800">
-                      <Phone className="h-4 w-4 text-slate-400" />
-                      +91 98765 43210
-                    </div>
-                  </div>
-
-                  <div>
-                    <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
-                      Default Address
-                    </p>
-                    <div className="mt-2 flex items-center gap-2 text-sm font-medium text-slate-800">
-                      <MapPin className="h-4 w-4 text-slate-400" />
-                      New Delhi, India
+                      {loggedInUser.email}
                     </div>
                   </div>
                 </div>
@@ -172,7 +158,12 @@ const AccountPage = () => {
                     <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
                       <Package className="h-5 w-5" />
                     </div>
-                    <div className="flex-1">
+                    <div
+                      onClick={() => {
+                        navigate("/main/orders");
+                      }}
+                      className="flex-1 cursor-pointer"
+                    >
                       <h3 className="font-semibold text-slate-800">
                         My Orders
                       </h3>
@@ -187,7 +178,12 @@ const AccountPage = () => {
                     <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-rose-50 text-rose-500">
                       <Heart className="h-5 w-5" />
                     </div>
-                    <div className="flex-1">
+                    <div
+                      onClick={() => {
+                        navigate("/main/wishlist");
+                      }}
+                      className="flex-1 cursor-pointer"
+                    >
                       <h3 className="font-semibold text-slate-800">Wishlist</h3>
                       <p className="mt-1 text-sm text-slate-500">
                         Products saved for later
