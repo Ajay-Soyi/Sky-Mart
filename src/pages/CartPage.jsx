@@ -1,70 +1,29 @@
-import React, { useCallback, useContext } from "react";
+import React, { useContext } from "react";
 import {
   ShoppingCart,
   ArrowLeft,
   Plus,
   Minus,
   Trash2,
-  Tag,
   ShieldCheck,
   Truck,
-  LockKeyhole,
   Zap,
 } from "lucide-react";
 import Navbar from "../components/Navbar";
 import { MyStore } from "../context/MyContext";
-import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
+import { useCart } from "../hooks/useCartHooks";
 
 const CartPage = () => {
-  const { cartData, setCartData, orderData, setOrderData } =
-    useContext(MyStore);
+  const { cartData } = useContext(MyStore);
   let navigate = useNavigate();
-
-  const subtotal = useCallback(() => {
-    return cartData.reduce((total, elem) => {
-      return total + elem.price * elem.quantity;
-    }, 0);
-  }, [cartData]);
-
-  const incrementCartItems = (id) => {
-    const tempCartData = cartData.map((elem) => {
-      if (elem.id === id) {
-        return { ...elem, quantity: elem.quantity + 1 };
-      }
-      return elem;
-    });
-    setCartData(tempCartData);
-    localStorage.setItem("cartData", JSON.stringify(tempCartData));
-  };
-
-  const decrementCartItems = (id) => {
-    let tempCartData = cartData.map((elem) => {
-      if (elem.id === id) {
-        return { ...elem, quantity: elem.quantity - 1 };
-      }
-      return elem;
-    });
-    tempCartData = tempCartData.filter((elem) => elem.quantity != 0);
-
-    setCartData(tempCartData);
-    localStorage.setItem("cartData", JSON.stringify(tempCartData));
-  };
-
-  const removeCartItem = (id) => {
-    const tempCartArr = cartData.filter((elem) => elem.id !== id);
-    setCartData(tempCartArr);
-    localStorage.setItem("cartData", JSON.stringify(tempCartArr));
-  };
-
-  const addOrderData = () => {
-    const tempCartData = [...orderData, ...cartData];
-    setCartData([]);
-    localStorage.setItem("orderData", JSON.stringify(tempCartData));
-    localStorage.setItem("cartData", JSON.stringify([]));
-    toast.success("Order placed successfully!");
-    navigate("/main/orders");
-  };
+  const {
+    subtotal,
+    incrementCartItems,
+    decrementCartItems,
+    removeCartItem,
+    addOrderData,
+  } = useCart();
 
   return (
     <div>

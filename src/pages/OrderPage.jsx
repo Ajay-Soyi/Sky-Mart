@@ -9,19 +9,10 @@ import {
 import Navbar from "../components/Navbar";
 import { MyStore } from "../context/MyContext";
 import { useNavigate } from "react-router";
+import { useOrder } from "../hooks/useOrderHooks";
 
 const OrdersPage = () => {
-  const { orderData } = useContext(MyStore);
-
-  const totalSpent = orderData.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0,
-  );
-
-  const totalItems = orderData.reduce(
-    (total, item) => total + item.quantity,
-    0,
-  );
+  const { orderData, totalSpent, totalItems } = useOrder();
 
   let navigate = useNavigate();
 

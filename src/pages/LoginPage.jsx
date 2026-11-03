@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import {
   Sparkles,
   ShoppingBag,
@@ -9,41 +9,18 @@ import {
   Truck,
   ShieldCheck,
 } from "lucide-react";
-import { MyStore } from "../context/MyContext";
-import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router";
-import { toast } from "react-toastify";
+import { useLogin } from "../hooks/useLoginHooks";
 
 const Login = () => {
-  let {
+  const {
+    loginFormSubmit,
     register,
     handleSubmit,
     reset,
     setError,
-    formState: { errors },
-  } = useForm({
-    mode: "onChange",
-  });
-
-  const { setLoggedInUser, registeredUsers } = useContext(MyStore);
-  let navigate = useNavigate();
-
-  const loginFormSubmit = (data) => {
-    const user = registeredUsers.find(
-      (elem) => elem.email === data.email && elem.password === data.password,
-    );
-    if (!user) {
-      setError("root", {
-        type: "manual",
-        message: "Invalid email or password",
-      });
-      toast.error("Invalid username or password");
-    } else {
-      setLoggedInUser(user);
-      localStorage.setItem("loggedInUser", JSON.stringify(user));
-      navigate("/main");
-    }
-  };
+    errors,
+    navigate,
+  } = useLogin();
 
   return (
     <div className="flex min-h-screen flex-col bg-white text-slate-800">

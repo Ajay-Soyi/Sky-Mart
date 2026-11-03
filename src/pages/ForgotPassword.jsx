@@ -8,48 +8,19 @@ import {
   Eye,
 } from "lucide-react";
 
-import { useForm } from "react-hook-form";
-import { useState } from "react";
-import { useContext } from "react";
-import { MyStore } from "../context/MyContext";
-import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
+import { useForgot } from "../hooks/useForgotPasswordHooks";
 
 const ForgotPassword = () => {
   const {
     register,
     handleSubmit,
-    reset,
     getValues,
-    setError,
-    formState: { errors },
-  } = useForm({
-    mode: "onChange",
-  });
-  const [forgotPassUser, setForgotPassUser] = useState(null);
-  const { registeredUsers, setRegisteredUsers } = useContext(MyStore);
+    errors,
+    forgetPasswordFormSubmit,
+  } = useForgot();
+
   let navigate = useNavigate();
-
-  const forgetPasswordFormSubmit = (data) => {
-    const registeredUser = registeredUsers.some(
-      (user) => user.email === data.email,
-    );
-    if (!registeredUser) {
-      toast.error("No account found with this email address.");
-      return;
-    }
-
-    const tempRegisteredUser = registeredUsers.map((user) => {
-      if (user.email === data.email) {
-        user.password = data.password;
-      }
-      return user;
-    });
-    setRegisteredUsers(tempRegisteredUser);
-    localStorage.setItem("registeredUsers", JSON.stringify(tempRegisteredUser));
-    toast.success("Password updated successfully! You can now sign in.");
-    navigate("/");
-  };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-slate-50 px-5 py-10">
