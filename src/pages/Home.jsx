@@ -17,6 +17,7 @@ import { MyStore } from "../context/MyContext";
 import TrendingSkeleton from "../components/TrendingSkeleton";
 import NavbarLinks from "../components/NavbarLinks";
 import Navbar from "../components/Navbar";
+import { useNavigate } from "react-router";
 const categories = [
   {
     id: 1,
@@ -72,6 +73,7 @@ function Home() {
   const trendingProducts = productsData.filter(
     (elem) => elem.trending === true,
   );
+  let navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-white text-slate-900">
@@ -101,7 +103,12 @@ function Home() {
                 you'll love, at prices you'll appreciate.
               </p>
 
-              <div className="mt-8 inline-flex items-center gap-3 rounded-full bg-blue-600 px-7 py-4 text-sm font-semibold text-white shadow-lg shadow-blue-600/20 transition hover:bg-blue-700">
+              <div
+                onClick={() => {
+                  navigate("/main/products/jewelery");
+                }}
+                className="mt-8 inline-flex items-center gap-3 rounded-full bg-blue-600 px-7 py-4 text-sm font-semibold text-white shadow-lg shadow-blue-600/20 transition hover:bg-blue-700 cursor-pointer"
+              >
                 Explore collection
                 <ArrowRight className="h-4 w-4" />
               </div>

@@ -20,6 +20,9 @@ export const MyContextProvider = ({ children }) => {
   const [loggedInUser, setLoggedInUser] = useState(
     JSON.parse(localStorage.getItem("loggedInUser")) || null,
   );
+  const [orderData, setOrderData] = useState(
+    JSON.parse(localStorage.getItem("orderData")) || [],
+  );
 
   const getProductsData = async () => {
     try {
@@ -50,6 +53,8 @@ export const MyContextProvider = ({ children }) => {
         setRegisteredUsers,
         loggedInUser,
         setLoggedInUser,
+        orderData,
+        setOrderData,
       }}
     >
       {children}

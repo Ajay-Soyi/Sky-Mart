@@ -9,13 +9,17 @@ import {
   ShieldCheck,
   Truck,
   LockKeyhole,
+  Zap,
 } from "lucide-react";
 import Navbar from "../components/Navbar";
 import { MyStore } from "../context/MyContext";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router";
 
 const CartPage = () => {
-  const { cartData, setCartData } = useContext(MyStore);
+  const { cartData, setCartData, orderData, setOrderData } =
+    useContext(MyStore);
+  let navigate = useNavigate();
 
   const subtotal = useCallback(() => {
     return cartData.reduce((total, elem) => {
@@ -46,6 +50,22 @@ const CartPage = () => {
     setCartData(tempCartData);
     localStorage.setItem("cartData", JSON.stringify(tempCartData));
   };
+
+  const removeCartItem = (id) => {
+    const tempCartArr = cartData.filter((elem) => elem.id !== id);
+    setCartData(tempCartArr);
+    localStorage.setItem("cartData", JSON.stringify(tempCartArr));
+  };
+
+  const addOrderData = () => {
+    const tempCartData = [...orderData, ...cartData];
+    setCartData([]);
+    localStorage.setItem("orderData", JSON.stringify(tempCartData));
+    localStorage.setItem("cartData", JSON.stringify([]));
+    toast.success("Order placed successfully!");
+    navigate("/main/orders");
+  };
+
   return (
     <div>
       <Navbar />
@@ -118,7 +138,12 @@ const CartPage = () => {
                           ${item.price.toFixed(2)}
                         </p>
 
-                        <button className="mt-3 flex w-fit items-center gap-1.5 text-xs font-medium text-slate-400 transition hover:text-red-500">
+                        <button
+                          onClick={() => {
+                            removeCartItem(item.id);
+                          }}
+                          className="mt-3 flex w-fit items-center gap-1.5 text-xs font-medium text-slate-400 transition hover:text-red-500"
+                        >
                           <Trash2 className="h-3.5 w-3.5" />
                           Remove
                         </button>
@@ -162,7 +187,12 @@ const CartPage = () => {
 
                 {/* Continue Shopping */}
                 <div className="border-t border-slate-100 px-5 py-4 sm:px-6">
-                  <button className="flex items-center gap-2 text-sm font-semibold text-blue-600 transition hover:text-blue-700">
+                  <button
+                    onClick={() => {
+                      navigate("/main");
+                    }}
+                    className="cursor-pointer flex items-center gap-2 text-sm font-semibold text-blue-600 transition hover:text-blue-700"
+                  >
                     <ArrowLeft className="h-4 w-4" />
                     Continue Shopping
                   </button>
@@ -175,7 +205,6 @@ const CartPage = () => {
                   <h2 className="text-lg font-semibold text-slate-900">
                     Order Summary
                   </h2>
-
                   <div className="mt-6 space-y-4 text-sm">
                     <div className="flex justify-between gap-4 text-slate-500">
                       <span>Subtotal</span>
@@ -208,32 +237,15 @@ const CartPage = () => {
                       </p>
                     </div>
                   </div>
-
-                  {/* Promo Code */}
-                  <div className="mt-6">
-                    <label className="mb-2 flex items-center gap-2 text-sm font-medium text-slate-700">
-                      <Tag className="h-4 w-4 text-slate-400" />
-                      Promo code
-                    </label>
-
-                    <div className="flex gap-2">
-                      <input
-                        type="text"
-                        placeholder="Enter code"
-                        className="min-w-0 flex-1 rounded-xl border border-slate-200 px-3 py-3 text-sm outline-none transition focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
-                      />
-                      <button className="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
-                        Apply
-                      </button>
-                    </div>
-                  </div>
-
                   {/* Checkout */}
-                  <button className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3.5 text-sm font-semibold text-white shadow-sm shadow-blue-200 transition hover:bg-blue-700">
-                    Proceed to Checkout
-                    <LockKeyhole className="h-4 w-4" />
+                  <button
+                    onClick={() => {
+                      addOrderData();
+                    }}
+                    className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3.5 text-sm font-semibold text-white shadow-sm shadow-blue-200 transition hover:bg-blue-700 cursor-pointer"
+                  >
+                    Buy Now <Zap className="h-4 w-4" />
                   </button>
-
                   <div className="mt-4 flex items-center justify-center gap-2 text-xs text-slate-400">
                     <ShieldCheck className="h-4 w-4 text-emerald-500" />
                     Secure checkout

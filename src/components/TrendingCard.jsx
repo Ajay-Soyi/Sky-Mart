@@ -14,9 +14,11 @@ const TrendingCard = ({ product }) => {
   const cartItem = cartData.find((elem) => elem.id === product.id);
 
   const addToCart = () => {
-    const tempCartData = productsData.find((elem) => {
-      return elem.id === product.id;
-    });
+    const tempCartData = {
+      ...productsData.find((elem) => {
+        return elem.id === product.id;
+      }),
+    };
     console.log(productsData);
     if (tempCartData["quantity"]) {
       tempCartData["quantity"] = tempCartData["quantity"] + 1;
