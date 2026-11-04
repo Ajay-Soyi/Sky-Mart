@@ -19,7 +19,7 @@ const TrendingCard = ({ product }) => {
         return elem.id === product.id;
       }),
     };
-    console.log(productsData);
+
     if (tempCartData["quantity"]) {
       tempCartData["quantity"] = tempCartData["quantity"] + 1;
     } else {

@@ -242,7 +242,12 @@ const CartPage = () => {
                 something you'll love.
               </p>
 
-              <button className="mt-6 flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-700">
+              <button
+                onClick={() => {
+                  navigate("/main");
+                }}
+                className="mt-6 flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-700"
+              >
                 Explore Products
                 <ArrowLeft className="h-4 w-4" />
               </button>

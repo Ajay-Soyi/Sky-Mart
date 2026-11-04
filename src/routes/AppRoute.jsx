@@ -9,6 +9,7 @@ import Signup from "../pages/Signup";
 import MainProtectedRoute from "./protected/MainProtectedRoute";
 import ForgotPassword from "../pages/ForgotPassword";
 import OrdersPage from "../pages/OrderPage";
+import PublicProtectedRoute from "./protected/PublicProtectedRoute";
 
 let ProductsPage = lazy(() => import("../pages/ProductsPage"));
 let MainLayout = lazy(() => import("../layouts/MainLayout"));
@@ -21,19 +22,25 @@ const AppRoute = () => {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <AuthLayout />,
+      element: <PublicProtectedRoute />,
       children: [
         {
           path: "",
-          element: <Login />,
-        },
-        {
-          path: "signup",
-          element: <Signup />,
-        },
-        {
-          path: "forgot-password",
-          element: <ForgotPassword />,
+          element: <AuthLayout />,
+          children: [
+            {
+              path: "",
+              element: <Login />,
+            },
+            {
+              path: "signup",
+              element: <Signup />,
+            },
+            {
+              path: "forgot-password",
+              element: <ForgotPassword />,
+            },
+          ],
         },
       ],
     },

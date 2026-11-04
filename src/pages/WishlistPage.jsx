@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import {
   Heart,
   ShoppingBag,
@@ -8,40 +8,17 @@ import {
   ShoppingCart,
 } from "lucide-react";
 import Navbar from "../components/Navbar";
-import { MyStore } from "../context/MyContext";
-import { Navigate, useNavigate } from "react-router";
+
+import { useWishlist } from "../hooks/useWishlistHooks";
 
 const WishlistPage = () => {
-  const { wishlistData, setWishlistData, setCartData, productsData, cartData } =
-    useContext(MyStore);
-
-  const removeProductWishlist = (id) => {
-    const tempWishlistData = wishlistData.filter((elem) => elem.id !== id);
-    setWishlistData(tempWishlistData);
-    localStorage.setItem("wishlistData", JSON.stringify(tempWishlistData));
-  };
-
-  const clearAllWishlist = () => {
-    setWishlistData([]);
-    localStorage.setItem("wishlistData", JSON.stringify([]));
-  };
-
-  const addToCart = (id) => {
-    const tempCartData = productsData.find((elem) => {
-      return elem.id === id;
-    });
-    if (tempCartData["quantity"]) {
-      tempCartData["quantity"] = tempCartData["quantity"] + 1;
-    } else {
-      tempCartData["quantity"] = 1;
-    }
-
-    setCartData((prev) => [...prev, tempCartData]);
-    removeProductWishlist(id);
-    toast.success("Item added to cart!");
-  };
-
-  let navigate = useNavigate();
+  const {
+    wishlistData,
+    removeProductWishlist,
+    clearAllWishlist,
+    addToCart,
+    navigate,
+  } = useWishlist();
 
   return (
     <div>

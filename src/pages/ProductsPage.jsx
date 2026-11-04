@@ -5,18 +5,11 @@ import { useParams } from "react-router";
 import { MyStore } from "../context/MyContext";
 import NavbarLinks from "../components/NavbarLinks";
 import Navbar from "../components/Navbar";
+import { useProduct } from "../hooks/useProductHooks";
 
 const ProductsPage = () => {
-  const { category } = useParams();
-  const { productsData, setFilteredData, filteredData } = useContext(MyStore);
-
-  useEffect(() => {
-    const tempFilteredData = productsData.filter(
-      (elem) => elem.category === category,
-    );
-
-    setFilteredData(tempFilteredData);
-  }, [category, productsData]);
+  const { setFilteredData, filteredData, productsData, category } =
+    useProduct();
 
   return (
     <div>

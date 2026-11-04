@@ -1,8 +1,13 @@
 import { useCallback, useContext } from "react";
 import { MyStore } from "../context/MyContext";
+import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
 
 export const useCart = () => {
-  const { cartData, setCartData, orderData } = useContext(MyStore);
+  const { cartData, setCartData, orderData, setOrderData } =
+    useContext(MyStore);
+
+  let navigate = useNavigate();
 
   const subtotal = useCallback(() => {
     return cartData.reduce((total, elem) => {
@@ -43,6 +48,7 @@ export const useCart = () => {
   const addOrderData = () => {
     const tempCartData = [...orderData, ...cartData];
     setCartData([]);
+    setOrderData(tempCartData);
     localStorage.setItem("orderData", JSON.stringify(tempCartData));
     localStorage.setItem("cartData", JSON.stringify([]));
     toast.success("Order placed successfully!");

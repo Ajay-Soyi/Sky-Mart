@@ -14,19 +14,10 @@ import Navbar from "../components/Navbar";
 import { useParams } from "react-router";
 import { useContext, useEffect, useState } from "react";
 import { MyStore } from "../context/MyContext";
+import { useProduct } from "../hooks/useProductHooks";
 
 const ProductsDetail = () => {
-  const { id } = useParams();
-  const { productsData } = useContext(MyStore);
-  const [productsDetail, setProductsDetail] = useState(null);
-
-  useEffect(() => {
-    const tempProductDetail = productsData.find(
-      (elem) => elem.id === Number(id),
-    );
-
-    setProductsDetail(tempProductDetail ?? null);
-  }, [id, productsData]);
+  const { productsDetail, productsData } = useProduct();
 
   if (!productsData?.length) {
     return (

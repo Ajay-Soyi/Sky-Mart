@@ -12,38 +12,10 @@ import {
 import { MyStore } from "../context/MyContext";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
+import { useSignup } from "../hooks/useSignupHooks";
 
 const Signup = () => {
-  let {
-    register,
-    handleSubmit,
-    reset,
-    getValues,
-    formState: { errors },
-  } = useForm({
-    mode: "onChange",
-  });
-
-  const { setRegisteredUsers, registeredUsers } = useContext(MyStore);
-  let navigate = useNavigate();
-
-  const formSubmit = (data) => {
-    const { confirmPassword, ...formData } = data;
-    // make a use state , then store form data there , then store it in local storage.
-    const tempRegisteredUsers = [
-      ...registeredUsers,
-      { ...formData, id: nanoid() },
-    ];
-    console.log(tempRegisteredUsers);
-    setRegisteredUsers(tempRegisteredUsers);
-    localStorage.setItem(
-      "registeredUsers",
-      JSON.stringify(tempRegisteredUsers),
-    );
-    reset();
-    toast.success("User registered successfully!");
-    navigate("/");
-  };
+  const { register, handleSubmit, getValues, errors, formSubmit } = useSignup();
 
   return (
     <div className="relative flex min-h-screen flex-col bg-slate-50 text-slate-800">
@@ -262,25 +234,6 @@ const Signup = () => {
                   Use 8+ characters, including uppercase and lowercase letters,
                   a number, and a special character.
                 </p>
-
-                {/* Terms */}
-                <label className="flex items-start gap-2.5 text-sm leading-5 text-slate-600">
-                  <input
-                    type="checkbox"
-                    className="mt-1 h-4 w-4 shrink-0 accent-blue-600"
-                  />
-                  <span>
-                    I agree to the{" "}
-                    <a href="#" className="font-medium text-blue-600">
-                      Terms of Service
-                    </a>{" "}
-                    and{" "}
-                    <a href="#" className="font-medium text-blue-600">
-                      Privacy Policy
-                    </a>
-                    .
-                  </span>
-                </label>
 
                 {/* Submit */}
                 <button

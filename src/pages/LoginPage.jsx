@@ -213,15 +213,6 @@ const Login = () => {
                 )}
               </div>
 
-              {/* Remember me */}
-              <label className="flex w-fit cursor-pointer items-center gap-2">
-                <input
-                  type="checkbox"
-                  className="h-4 w-4 rounded border-slate-300 accent-blue-600"
-                />
-                <span className="text-sm text-slate-600">Remember me</span>
-              </label>
-
               {/* Submit */}
               <button
                 type="submit"

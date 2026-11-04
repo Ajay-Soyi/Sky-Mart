@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import {
   Package,
   ShoppingBag,
@@ -7,7 +7,6 @@ import {
   CalendarDays,
 } from "lucide-react";
 import Navbar from "../components/Navbar";
-import { MyStore } from "../context/MyContext";
 import { useNavigate } from "react-router";
 import { useOrder } from "../hooks/useOrderHooks";
 
